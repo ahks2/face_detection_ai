@@ -1,0 +1,11 @@
+.image-container {
+  position: relative;
+  display: inline-block;
+}
+
+.bounding-box {
+  position: absolute;
+  border: 3px solid #9D58EE;
+  box-shadow: 0 0 0 2px rgba(157, 88, 238, 0.4);
+  pointer-events: none;
+}
