@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/face_detection_ai/static/css/main.a811d10f.css",
-    "main.js": "/face_detection_ai/static/js/main.df5da401.js",
-    "static/js/453.b8197650.chunk.js": "/face_detection_ai/static/js/453.b8197650.chunk.js",
+    "main.js": "/face_detection_ai/static/js/main.0d5780d5.js",
+    "static/js/453.455115d8.chunk.js": "/face_detection_ai/static/js/453.455115d8.chunk.js",
     "static/media/site icon.webp": "/face_detection_ai/static/media/site icon.8f5c14822490d1836224.webp",
     "index.html": "/face_detection_ai/index.html",
     "main.a811d10f.css.map": "/face_detection_ai/static/css/main.a811d10f.css.map",
-    "main.df5da401.js.map": "/face_detection_ai/static/js/main.df5da401.js.map",
-    "453.b8197650.chunk.js.map": "/face_detection_ai/static/js/453.b8197650.chunk.js.map"
+    "main.0d5780d5.js.map": "/face_detection_ai/static/js/main.0d5780d5.js.map",
+    "453.455115d8.chunk.js.map": "/face_detection_ai/static/js/453.455115d8.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a811d10f.css",
-    "static/js/main.df5da401.js"
+    "static/js/main.0d5780d5.js"
   ]
 }
