@@ -9,119 +9,128 @@ import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 
-
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
       imageUrl: "",
-      faces: [],
-      route:"signin",
+      route: "signin",
       isSignedIn: false,
+      user: {
+        id: "",
+        name: "",
+        email: "",
+        entries: 0,
+        joined: ""
+      }
     };
   }
 
-  onInputChange=(event)=>{
-    console.log(event.target.value)     
-  }
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined
+      }
+    });
+  };
 
-  onButtonSubmit = async (file) => {
-    try {
-      // Create local URL for display
-      const imageUrl = URL.createObjectURL(file);
+  onButtonSubmit = (file) => {
+    if (!file) return;
 
-      this.setState({ imageUrl });
+    const imageUrl = URL.createObjectURL(file);
+    this.setState({ imageUrl });
 
-      const formData = new FormData();
-      formData.append("image", file);
+    fetch("http://localhost:3001/image", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: this.state.user.id
+      })
+    })
+      .then((response) => response.json())
+      .then((count) => {
+        this.setState((prevState) => ({
+          user: {
+            ...prevState.user,
+            entries: Number(count.entries)
+          }
+        }));
+      })
+      .catch((err) => console.log("Error updating entries:", err));
+  };
 
-      const response = await fetch(
-        "https://api.api-ninjas.com/v1/facedetect",
-        {
-          method: "POST",
-          headers: {
-            "X-Api-Key": "YOUR_API_KEY"
-          },
-          body: formData
-        }
-      );
-
-
-      const data = await response.json();
-
-      console.log(data);
-
-      this.setState({
-        faces: data
-      });
-
-    } catch (error) {
-      console.error(error);
+  onRouteChange = (route) => {
+    if (route === "signin") {
+      this.setState({ isSignedIn: false, route: "signin" });
+    } else if (route === "home") {
+      this.setState({ isSignedIn: true, route: "home" });
+    } else {
+      this.setState({ route });
     }
   };
 
-  onRouteChange=(route)=>{
-    if (route === "signin"){
-      this.setState({isSignedIn:false,route:route});
-    }
-    else{
-      this.setState({route:route});
-    }
-  }
-
-  isSignedIn=()=>{
-    this.setState({isSignedIn:true})
-  }
-
-  renderContent(){
-    if (this.state.route==="signin"){
-      return <Signin onRouteChange={this.onRouteChange} isSignedIn={this.isSignedIn}/>
-    }
-    else if (this.state.route==="register"){
-      return <Register onRouteChange={this.onRouteChange}/>
-    }
-    else {
+  renderContent() {
+    if (this.state.route === "signin") {
+      return (
+        <Signin
+          loadUser={this.loadUser}
+          onRouteChange={this.onRouteChange}
+        />
+      );
+    } else if (this.state.route === "register") {
+      return (
+        <Register
+          loadUser={this.loadUser}
+          onRouteChange={this.onRouteChange}
+        />
+      );
+    } else {
       return (
         <div>
           <Logo />
-          <Rank />
-          <ImageLinkForm onButtonSubmit={this.onButtonSubmit} />
-          <FaceRecognition
-            imageUrl={this.state.imageUrl}
-            faces={this.state.faces}
+          <Rank
+            name={this.state.user.name}
+            entries={this.state.user.entries}
           />
-      </div>
-      )
+          <ImageLinkForm onButtonSubmit={this.onButtonSubmit} />
+          <FaceRecognition imageUrl={this.state.imageUrl} />
+        </div>
+      );
     }
   }
 
-  render(){
+  render() {
     return (
       <div className="App">
         <div className="background-grid">
-        <GridScan
-          sensitivity={0}
-          lineThickness={1}
-          // Updated to match your logo and button
-          linesColor="#9D58EE" 
-          gridScale={0.15}
-          // Updated to match the same palette
-          scanColor="#9D58EE" 
-          scanOpacity={0.1}
-          bloomIntensity={0.9}
-          chromaticAberration={0.002}
-          noiseIntensity={0.01}
-          lineJitter={0.1}
-          scanGlow={0.1}
-          scanSoftness={4}
-          enableWebcam={false}
-          showPreview={false}
-          scanDirection={"forward"}
-          scanDuration={6}
-          scanDelay={1.5}
-        />
+          <GridScan
+            sensitivity={0}
+            lineThickness={1}
+            linesColor="#9D58EE"
+            gridScale={0.15}
+            scanColor="#9D58EE"
+            scanOpacity={0.1}
+            bloomIntensity={0.9}
+            chromaticAberration={0.002}
+            noiseIntensity={0.01}
+            lineJitter={0.1}
+            scanGlow={0.1}
+            scanSoftness={4}
+            enableWebcam={false}
+            showPreview={false}
+            scanDirection={"forward"}
+            scanDuration={6}
+            scanDelay={1.5}
+          />
         </div>
-        <Navigation onRouteChange={this.onRouteChange} isSignedIn={this.state.isSignedIn}/>
+        <Navigation
+          onRouteChange={this.onRouteChange}
+          isSignedIn={this.state.isSignedIn}
+        />
         {this.renderContent()}
       </div>
     );

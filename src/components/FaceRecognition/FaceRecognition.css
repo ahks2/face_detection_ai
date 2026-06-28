@@ -1,11 +1,15 @@
 .image-container {
   position: relative;
   display: inline-block;
+  margin-top: 2rem;
 }
 
-.bounding-box {
-  position: absolute;
-  border: 3px solid #9D58EE;
-  box-shadow: 0 0 0 2px rgba(157, 88, 238, 0.4);
-  pointer-events: none;
+.uploaded-image {
+  display: block;
+  width: 500px;
+  max-width: 90vw;
+  height: auto;
+  border-radius: 8px;
+  border: 2px solid rgba(157, 88, 238, 0.6);
+  box-shadow: 0 0 24px rgba(157, 88, 238, 0.35);
 }
